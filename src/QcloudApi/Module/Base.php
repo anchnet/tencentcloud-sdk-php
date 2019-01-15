@@ -30,7 +30,10 @@ abstract class QcloudApi_Module_Base extends QcloudApi_Common_Base
      * @var string
      */
     protected $_secretId = "";
-
+    /**
+     * 自定义扩展信息传入
+     */
+    protected $_ext = [];
     /**
      * $_secretKey
      * secretKey
@@ -58,8 +61,9 @@ abstract class QcloudApi_Module_Base extends QcloudApi_Common_Base
      */
     public function __construct($config = array())
     {
-        if (!empty($config))
+        if (!empty($config)) {
             $this->setConfig($config);
+        }
     }
 
     /**
@@ -69,8 +73,9 @@ abstract class QcloudApi_Module_Base extends QcloudApi_Common_Base
      */
     public function setConfig($config)
     {
-        if (!is_array($config) || !count($config))
+        if (!is_array($config) || !count($config)) {
             return false;
+        }
 
         foreach ($config as $key => $val) {
             switch ($key) {
@@ -89,7 +94,9 @@ abstract class QcloudApi_Module_Base extends QcloudApi_Common_Base
                 case 'RequestMethod':
                     $this->setConfigRequestMethod($val);
                     break;
-
+                case 'Ext':
+                    $this->_ext = $val;
+                    break;
                 default:
                     ;
                 break;
@@ -179,11 +186,18 @@ abstract class QcloudApi_Module_Base extends QcloudApi_Common_Base
         $action = ucfirst($name);
         $params['Action'] = $action;
 
-        if (!isset($params['Region']))
+        if (!isset($params['Region'])) {
             $params['Region'] = $this->_defaultRegion;
+        }
 
-        return QcloudApi_Common_Request::generateUrl($params, $this->_secretId, $this->_secretKey, $this->_requestMethod,
-                                                   $this->_serverHost, $this->_serverUri);
+        return QcloudApi_Common_Request::generateUrl(
+            $params,
+            $this->_secretId,
+            $this->_secretKey,
+            $this->_requestMethod,
+            $this->_serverHost,
+            $this->_serverUri
+        );
     }
 
     /**
@@ -217,13 +231,25 @@ abstract class QcloudApi_Module_Base extends QcloudApi_Common_Base
         }
         $params['Action'] = $action;
 
-        if (!isset($params['Region']))
+        if (!isset($params['Region'])) {
             $params['Region'] = $this->_defaultRegion;
+        }
+        if (!empty($this->_ext)) {
+            foreach ($this->_ext as $item => $value) {
+                $params[$item] = $value;
+            }
+        }
 
         require_once QCLOUDAPI_ROOT_PATH . '/Common/Request.php';
 
-        $response = QcloudApi_Common_Request::send($params, $this->_secretId, $this->_secretKey, $this->_requestMethod,
-                                                   $this->_serverHost, $this->_serverUri);
+        $response = QcloudApi_Common_Request::send(
+            $params,
+            $this->_secretId,
+            $this->_secretKey,
+            $this->_requestMethod,
+            $this->_serverHost,
+            $this->_serverUri
+        );
 
         return $response;
     }
@@ -241,7 +267,8 @@ abstract class QcloudApi_Module_Base extends QcloudApi_Common_Base
             return false;
         }
 
-        if ($rawResponse['code']) {
+        if ((isset($rawResponse['code']) && $rawResponse['code'] != 0)
+            || (isset($rawResponse['codeDesc']) && $rawResponse['codeDesc'] != 'Success')) {
             $ext = '';
             require_once QCLOUDAPI_ROOT_PATH . '/Common/Error.php';
             if (isset($rawResponse['detail'])) {
@@ -254,9 +281,10 @@ abstract class QcloudApi_Module_Base extends QcloudApi_Common_Base
 
         unset($rawResponse['code'], $rawResponse['message']);
 
-        if (count($rawResponse))
+        if (count($rawResponse)) {
             return $rawResponse;
-        else
+        } else {
             return true;
+        }
     }
 }

@@ -60,7 +60,11 @@ class QcloudApi
      * 云监控
      */
     const MODULE_MONITOR = 'monitor';
-
+    /**
+     * MODULE_MONITOR_DISK
+     * 云监控 硬盘
+     */
+    const MODULE_MONITOR_DISK = 'monitorDisk';
     /**
      * MODULE_CDN
      * CDN
@@ -84,12 +88,12 @@ class QcloudApi
      */
     const MODULE_YUNSOU = 'yunsou';
 
-	  /**
+    /**
      * cns
      */
     const MODULE_CNS = 'cns';
 
-	  /**
+    /**
      * wenzhi
      */
     const MODULE_WENZHI = 'wenzhi';
@@ -141,7 +145,7 @@ class QcloudApi
      */
     const MODULE_TDSQL = 'tdsql';
 
-        /**
+    /**
      * MODULE_BM
      * 黑石BM
      */
@@ -234,7 +238,7 @@ class QcloudApi
     /**
      * MODULE_STS
      */
-	const MODULE_STS = "sts";
+    const MODULE_STS = "sts";
 
     /**
      * MODULE_ATHENA

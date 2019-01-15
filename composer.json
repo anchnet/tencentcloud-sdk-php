@@ -1,8 +1,8 @@
 {
-    "name": "tencentcloud/tencentcloud-sdk-php",
-    "description": "TencentCloudApi php sdk",
+    "name": "anchnetpkg/tencentcloud-sdk-php",
+    "description": "TencentCloudApi php sdk for anchnet",
     "type": "library",
-    "homepage": "https://github.com/TencentCloud/tencentcloud-sdk-php",
+    "homepage": "https://github.com/anchnet/tencentcloud-sdk-php",
     "license": "Apache-2.0",
     "authors": [
         {
